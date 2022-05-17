@@ -1,11 +1,16 @@
 import requests
 import httpx
 from bs4 import BeautifulSoup
+from selenium import webdriver
+import time
+from tempfile import TemporaryFile
+import numpy as np
 
 
 def scrap_product(url_list,iteration_num):
     product_list = []
     for product_url in url_list:
+        
         product_html = httpx.get(product_url)
         soup = BeautifulSoup(product_html.content, 'html.parser')
 
@@ -22,10 +27,19 @@ def scrap_product(url_list,iteration_num):
         # Product Category & Color(Material)
         str = (soup.find("span",{"class":"pip-header-section__description-text"})).text
         str_split = str.split(',')
-        product_category = str_split[0]
-        product_color = str_split[1]
-        product_dict['Category'] = product_category
-        product_dict['Color'] = product_color
+        try:
+            product_category = str_split[0]
+            product_dict['Category'] = product_category
+        except:
+            product_dict['Category'] = "No Category"  
+            print("No category error occured") 
+
+        try:
+            product_color = str_split[1]
+            product_dict['Color'] = product_color
+        except:
+            product_dict['Color'] = "No Color"  
+            print("No Color error occured") 
 
         # Product Size
         try : 
@@ -54,12 +68,22 @@ def scrap_product(url_list,iteration_num):
         
         # Product URL & Image URL
         media_grid = soup.find("div",{"class":"pip-media-grid__media-container"})
-        product_image_url = (media_grid.find("img",{"class":"pip-aspect-ratio-image__image"})).get('src')
         product_dict['URL'] = product_url
-        product_dict['Image URL'] = product_image_url
+
+        try:
+            product_image_url = (media_grid.find("img",{"class":"pip-aspect-ratio-image__image"})).get('src')
+            product_dict['Image URL'] = product_image_url
+        except:
+            product_dict['Image URL'] = "No Product Image"
+
+        # Product Number
+        number_grid = soup.find("div",{"class":"pip-product__subgrid product-pip js-product-pip"}).get('data-product-no')
+        product_dict['Product Number'] = number_grid
 
         # Return List of Dictionary of product
         product_list.append(product_dict)
+
+
 
     return product_list
 
