@@ -1,13 +1,10 @@
 from selenium import webdriver
 from bs4 import BeautifulSoup
 import time
-from tempfile import TemporaryFile
-import numpy as np
 
-## Initial Value
-# Put in url for furniture category
 
 def scrap_url(url,load_time):
+    #Change local address for chromedriver
     driver = webdriver.Chrome('/Users/brannynew/Documents/AIStartup/WebScrapper/chromedriver 2')
     driver.get(url)
     time.sleep(load_time)

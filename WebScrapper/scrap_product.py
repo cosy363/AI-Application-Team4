@@ -1,16 +1,15 @@
-import requests
 import httpx
 from bs4 import BeautifulSoup
 from selenium import webdriver
-import time
-from tempfile import TemporaryFile
-import numpy as np
 
 
 def scrap_product(url_list,iteration_num):
     product_list = []
+    n = iteration_num
     for product_url in url_list:
-        
+        if n == 0:
+            break
+        n = n - 1
         product_html = httpx.get(product_url)
         soup = BeautifulSoup(product_html.content, 'html.parser')
 
