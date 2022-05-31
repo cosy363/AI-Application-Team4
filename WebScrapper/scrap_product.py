@@ -82,8 +82,6 @@ def scrap_product(url_list,iteration_num):
         # Return List of Dictionary of product
         product_list.append(product_dict)
 
-
-
     return product_list
 
 
