@@ -1,6 +1,7 @@
+from cmath import sin
 import json
 import pymysql
-from single_rec import single_rec
+from single_rec import single_rec,single_comb
 
 
 #1.REST API 형식의 유저 요청 들어옴
@@ -18,35 +19,29 @@ json_object = json.loads(json_string)
 #inputs: user color, furniture combination
 user_preference = {}
 user_preference['user_color'] = json_object['color preference']
-user_preference['furniture_combination'] = json_object['furniture preference']
+user_preference['furniture_combination'] = json_object['furniture preference'].sorted
 
 #2.rearrange furniture combination by 우선도
-furniture_combination.sort()
-print(furniture_combination[0])
 
 #3. single rec
-# Connect mysql server
-conn, cur = None, None
-conn = pymysql.connect(host='127.0.0.1',user='root',password='kimjin12',db='furniture_ikea',charset='utf8')
-cur = conn.cursor
 
 ##3.1: prime가구
 
-# import prime가구 category dB from mysql
-cur.execute("SELECT * FROM furniture_detail WHERE furniture_category1 = '{}'".format(str(furniture_combination[0])))
 
-furn_list = []
-do_singlerec(furn_list,furniture_combination[0])
-
-def do_singlerec(DB,category):
-    for furn in furn_list:
-        single_rec()
-
+prime_list,second_list,third_list,final_list = [],[],[],[]
 # single_rec.py 돌리기
+prime_list = single_comb(user_preference,1)
 # output: 10 Ps
 
-
 ##3.2: second가구 
+#[p1,p2p3...]
+second_list = single_comb(user_preference,2,prime_list)
+
+third_list = single_comb(user_preference,3,second_list)
+
+final_list = single_comb(user_preference,4,third_list)
+
+
 # import third가구 category dB from mysql
 # single_rec.py for each 10 Ps
 # output: 80 PxS    
