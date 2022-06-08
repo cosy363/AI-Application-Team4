@@ -15,7 +15,7 @@ def single_comb(preference,stage,comb_list=[]):
     conn, cur = None, None
     conn = pymysql.connect(host='127.0.0.1',user='root',password='kimjin12',db='furniture_DB',charset='utf8')
     cur = conn.cursor(pymysql.cursors.DictCursor)
-    cur.execute("SELECT Rating, Reviews, Category_Num, Color_2, Color_Num, New_ID, Image_URL, Price FROM furniture_DB.furniture_db  WHERE Category_Num = {}".format(str(preference['furniture_combination'][stage-1])))
+    cur.execute("SELECT Rating, Reviews, Category_Num, Color_2, Color_Num, New_ID, Image_URL, Price FROM furniture_DB.furniture  WHERE Category_Num = {}".format(str(preference['furniture_combination'][stage-1])))
     mysql_list = cur.fetchall()
     
     # Create empty list
@@ -38,8 +38,8 @@ def single_comb(preference,stage,comb_list=[]):
         sorted_dict = sorted(furn_list, key=itemgetter('single score'), reverse=True)
         for j in prime_sort_order:        
             return_list.append(sorted_dict[j])
-
         return return_list
+
     
     # Stage 2: Secnd Furuniture
     elif stage == 2:

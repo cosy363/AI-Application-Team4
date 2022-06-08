@@ -3,14 +3,13 @@ import cv2
 from matplotlib import pyplot as plt
 import requests
 import numpy as np
-import urllib3
 
 
-def imshow(final_list,price):    
-    url1 = final_list[0][0][0][0][0]['Image_URL']
-    url2 = final_list[0][0][0][0][1]['Image_URL']
-    url3 = final_list[0][0][0][0][2]['Image_URL']
-    url4 = final_list[0][0][0][0][3]['Image_URL']
+def imshow(final_list,price,i,j,k,l):    
+    url1 = final_list[i][j][k][l][0]['Image_URL']
+    url2 = final_list[i][j][k][l][1]['Image_URL']
+    url3 = final_list[i][j][k][l][2]['Image_URL']
+    url4 = final_list[i][j][k][l][3]['Image_URL']
 
     image_nparray = np.asarray(bytearray(requests.get(url1).content), dtype=np.uint8)
     image1 = cv2.imdecode(image_nparray, cv2.IMREAD_COLOR)

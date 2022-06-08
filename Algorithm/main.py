@@ -11,19 +11,19 @@ import numpy as np
 json_string='''{
     "id": 1,
     "username": "Jinkwon",
-    "furniture preference": [2,9,6,8],
-    "color preference": [1,4,5]
+    "furniture preference": [2,5,9,8],
+    "color preference": [2,4,6]
 }'''
 
 json_object = json.loads(json_string)
 
-manual_input = True
+#Manual Input이 True면 json값으로, 아니면 랜덤으로 지정되어 진행
+manual_input = False
 
 #inputs: user color, furniture combination
 user_preference = {}
 user_preference['user_color'] = json_object['color preference']
 user_preference['furniture_combination'] = sorted(json_object['furniture preference'])
-
 ######TESTCASE FOR MANUAL COMBINATION ASSESSMENT ONLY##############################
 if manual_input == False:
     color_rand, furniture_rand = [1,2,3,4,5,6], [1,2,3,4,5,6,7,8,9]
@@ -69,7 +69,6 @@ final_list = single_comb(user_preference,4,third_list)
 print("Combination Generated!")
 
 #3.5: sum of combination
-
 for i,a in enumerate(final_list):
     for j,b in enumerate(final_list[i]):
         for k,c in enumerate(final_list[i][j]):
@@ -92,8 +91,6 @@ for i,a in enumerate(final_list):
                 conn2, cur2 = None, None
                 conn2 = pymysql.connect(host='127.0.0.1',user='root',password='kimjin12',db='furniture_DB',charset='utf8')
 
-                
-
                 with conn2:
                     with conn2.cursor() as cur2:
                         cur2.execute(sql % (pri,sec,thr,fin,sum))
@@ -101,7 +98,8 @@ for i,a in enumerate(final_list):
 
 print("Price Sum: "+str(final_list[0][0][0][0][5])+ " 원")
 
-imshow(final_list,final_list[0][0][0][0][5])
+#Show Combination as image
+# imshow(final_list,final_list[0][0][0][0][5],0,0,0,0)
 
 # output: [P,S,T,F, sum of single_scores of combination]
 
