@@ -3,7 +3,7 @@ import numpy as np
 import pymysql
 import random
 
-color_table = [[85,	65,	65,		55,55,	55],[65, 85,65,	65,	75,	75],[65,65,	85,	75,	65,	65],[55,75,	55,	95,	95,	65],[55,55,	75,	95,	95,	65],[65,65,	65,	75,	75,	95]]
+color_table = [[85,	65,	65,	55,55,	55],[65, 85,65,	65,	75,	75],[65,65,	85,	75,	65,	65],[55,75,	55,	95,	95,	65],[55,55,	75,	95,	95,	65],[65,65,	65,	75,	75,	95]]
 
 def single_comb(preference,stage,comb_list=[]):
     prime_sort_order = [0,2,4,6,1,5,3,9,7,8]
@@ -232,3 +232,19 @@ def single_rec(furn,preference,stage,prime={},second={},third={},):
     score = abs + rel + random.uniform(-0.03, 0)
 
     return score
+
+def budget_limit(final_list,budget):
+    a,b,c,d = 0,0,0,0
+    for i,a in enumerate(final_list):
+        for j,b in enumerate(final_list[i]):
+            for k,c in enumerate(final_list[i][j]):
+                for l,d in enumerate(final_list[i][j][k]):
+                    for m,e in enumerate(final_list[i][j][k][l]):
+                        if final_list[i][j][k][l][5] <= budget:
+                            a = i
+                            b = j
+                            c = k
+                            d = l
+                            return [a,b,c,d],False
+
+    return [0,0,0,0],True

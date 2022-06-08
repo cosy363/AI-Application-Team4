@@ -2,6 +2,7 @@ from concurrent.futures import thread
 import json
 import pymysql
 import random
+from single_rec import budget_limit
 from single_rec import single_comb
 from imshow import imshow
 import numpy as np
@@ -11,19 +12,21 @@ import numpy as np
 json_string='''{
     "id": 1,
     "username": "Jinkwon",
-    "furniture preference": [2,5,9,8],
-    "color preference": [2,4,6]
+    "furniture preference": [1,3,4,8],
+    "color preference": [1,2,5],
+    "money": 10000000
 }'''
 
 json_object = json.loads(json_string)
 
 #Manual Input이 True면 json값으로, 아니면 랜덤으로 지정되어 진행
-manual_input = False
+manual_input = True
 
 #inputs: user color, furniture combination
 user_preference = {}
 user_preference['user_color'] = json_object['color preference']
 user_preference['furniture_combination'] = sorted(json_object['furniture preference'])
+budget = json_object['money']
 ######TESTCASE FOR MANUAL COMBINATION ASSESSMENT ONLY##############################
 if manual_input == False:
     color_rand, furniture_rand = [1,2,3,4,5,6], [1,2,3,4,5,6,7,8,9]
@@ -33,6 +36,7 @@ if manual_input == False:
 
     user_preference['user_color'] = sorted(color_rand)
     user_preference['furniture_combination'] = sorted(furniture_rand)
+    budget = 1000000
 ##################################################################################
 print("FURNITURE PREFERENCE: ",str(user_preference['furniture_combination']))
 print("COLOR PREFERENCE: ",str(user_preference['user_color']))
@@ -96,17 +100,17 @@ for i,a in enumerate(final_list):
                         cur2.execute(sql % (pri,sec,thr,fin,sum))
                         conn2.commit()
 
-print("Price Sum: "+str(final_list[0][0][0][0][5])+ " 원")
 
 #Show Combination as image
-# imshow(final_list,final_list[0][0][0][0][5],0,0,0,0)
+listbudget,no_comb = budget_limit(final_list,budget)
 
+if no_comb == True:
+    imshow(final_list,final_list[listbudget[0]][listbudget[1]][listbudget[2]][listbudget[3]][5],0,0,0,0)
+elif no_comb == False:
+    print("No Furniture within budget")
 # output: [P,S,T,F, sum of single_scores of combination]
 
 #4. Combination Evaluation
-
-
-
 #4.1 DL MODEL
 ##4.1.1 narrow down DB for RI model(난수 and singlescore 내림차순)
 ##4.1.2 DL model gogo

@@ -35,7 +35,7 @@ def imshow(final_list,price,i,j,k,l):
         price_text = str(price)[0]+str(price)[1]+str(price)[2]+ "," +str(price)[3]+str(price)[4]+ str(price)[5]+" Won"
     else:
         price_text = str(price)[0]+str(price)[1]+ "," +str(price)[3]+str(price)[4]+ str(price)[5]+" Won"
-    cv2.putText(Verti,price_text,(100,600),cv2.FONT_HERSHEY_PLAIN,6,(0,0,0),8)
+    cv2.putText(Verti,price_text,(550,1200),cv2.FONT_HERSHEY_PLAIN,6,(0,0,0),8)
     cv2.imshow('Combination', Verti)
     
     cv2.waitKey(0)
